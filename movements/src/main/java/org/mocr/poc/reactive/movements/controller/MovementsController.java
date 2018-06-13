@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 /**
  * Spring 5 WebFlux annotated controller for @Link Movement
@@ -37,8 +38,8 @@ public class MovementsController {
      */
 	@PostMapping(path = "/movements", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus (HttpStatus.CREATED)
-	public Mono<MovementEvent> create(@RequestBody Mono<Movement> movement) {	  
-		return emitter.emit(movement);  
+	public Mono<MovementEvent> create(@RequestBody Flux<Movement> movements) {	  
+		return emitter.emit(movements);  
 				  
 	} 
 

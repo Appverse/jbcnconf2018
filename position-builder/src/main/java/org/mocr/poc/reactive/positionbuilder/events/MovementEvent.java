@@ -2,6 +2,7 @@ package org.mocr.poc.reactive.positionbuilder.events;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize; 
@@ -29,8 +30,9 @@ public class MovementEvent implements Serializable {
 	/**
 	 * {@link Movement}
 	 */
-	@JsonDeserialize(as=Movement.class)
-	private Movement entity; 
+	@JsonDeserialize(contentAs=Movement.class)
+	private List<Movement> entities; 
+
 	/**
 	 * Created At    
 	 */
@@ -56,12 +58,15 @@ public class MovementEvent implements Serializable {
 	public void setType(MovementEventType type) {
 		this.type = type;
 	}
-	public Movement getEntity() {
-		return entity;
+	
+	public List<Movement> getEntities() {
+		return entities;
 	}
-	public void setEntity(Movement entity) {
-		this.entity = entity;
-	}
+
+	public void setEntities(List<Movement> entities) {
+		this.entities = entities;
+	} 
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -73,12 +78,12 @@ public class MovementEvent implements Serializable {
 	}
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
-	}
+	} 
+
 	@Override
 	public String toString() {
-		return "MovementEvent [eventId=" + eventId + ", type=" + type + ", entity=" + entity + ", createdAt="
+		return "MovementEvent [eventId=" + eventId + ", type=" + type + ", entities=" + entities + ", createdAt="
 				+ createdAt + ", lastModified=" + lastModified + "]";
 	}
-	
 	
 }

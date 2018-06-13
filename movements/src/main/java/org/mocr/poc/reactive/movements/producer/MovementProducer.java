@@ -15,6 +15,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.integration.support.MessageBuilder;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 /**
  * Movement Kafka producer
@@ -37,10 +39,10 @@ public class MovementProducer {
 	 * @param input
 	 * @return
 	 */
-	public Mono<MovementEvent> emit(Mono<Movement> input) {
-		  return input
-		           .map(movement -> {
-		            	MovementEvent event = new MovementEvent(movement, MovementEventType.CREATED); 
+	public Mono<MovementEvent> emit(Flux<Movement> input) {
+		  return input.collectList()
+		           .map(movements -> {
+		            	MovementEvent event = new MovementEvent(movements, MovementEventType.CREATED);		            	
 		            	source.output().send(MessageBuilder.withPayload(event).build());
 		            	return event;		             
 		           });

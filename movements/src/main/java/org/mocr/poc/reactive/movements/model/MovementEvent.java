@@ -1,6 +1,7 @@
 package org.mocr.poc.reactive.movements.model; 
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID; 
 
 /**
@@ -23,7 +24,9 @@ public class MovementEvent {
 	/**
 	 * {@link Movement}
 	 */
-	private Movement entity; 
+	private List<Movement> entities; 
+	
+
 	/**
 	 * Created At    
 	 */
@@ -33,8 +36,8 @@ public class MovementEvent {
 	 */
 	private Date lastModified;
 	
-	public MovementEvent (Movement entity, MovementEventType type) {
-		this.setEntity(entity);
+	public MovementEvent (List<Movement> entities, MovementEventType type) {
+		this.setEntities(entities);
 		this.setType(type);
 		this.setCreatedAt(new Date());
 		this.setEventId(UUID.randomUUID());
@@ -53,11 +56,13 @@ public class MovementEvent {
 	public void setType(MovementEventType type) {
 		this.type = type;
 	}
-	public Movement getEntity() {
-		return entity;
+	
+	public List<Movement> getEntities() {
+		return entities;
 	}
-	public void setEntity(Movement entity) {
-		this.entity = entity;
+
+	public void setEntities(List<Movement> entities) {
+		this.entities = entities;
 	}
 	public Date getCreatedAt() {
 		return createdAt;
@@ -74,8 +79,9 @@ public class MovementEvent {
 
 	@Override
 	public String toString() {
-		return "MovementEvent [eventId=" + eventId + ", type=" + type + ", entity=" + entity + ", createdAt="
+		return "MovementEvent [eventId=" + eventId + ", type=" + type + ", entities=" + entities + ", createdAt="
 				+ createdAt + ", lastModified=" + lastModified + "]";
 	}
-	
+
+ 
 }

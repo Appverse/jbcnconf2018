@@ -1,5 +1,8 @@
 package org.mocr.poc.reactive.movements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -24,6 +27,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 /**
  * Test web and producer. 
@@ -59,16 +63,19 @@ public class MovementsApplicationTests {
     
 	@Test
 	public void post() throws Exception {
-		Movement mov = new Movement(123, 50, 50);
-		
-		MovementEvent movEvent = new MovementEvent(mov, MovementEventType.CREATED);
+		Movement mov = new Movement(1, 50, 50);
+		Movement mov2 = new Movement(2, 50, 50);
+		List<Movement> mlist = new ArrayList<Movement>();
+		mlist.add(mov);
+		mlist.add(mov2);
+		MovementEvent movEvent = new MovementEvent(mlist, MovementEventType.CREATED);
         
-		BDDMockito.given(emitter.emit(Mono.just(mov)))
+		BDDMockito.given(emitter.emit(Flux.just(mov)))
 				.willReturn(Mono.just(movEvent)); 
 
 		webTestClient.post().uri("http://localhost:8080/movements")
 			.contentType(MediaType.APPLICATION_JSON)
-			.body(BodyInserters.fromObject(mov))
+			.body(BodyInserters.fromObject(mlist))
 			.exchange()
 			.expectStatus()
 			.isCreated()
