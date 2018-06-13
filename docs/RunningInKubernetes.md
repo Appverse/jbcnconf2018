@@ -145,7 +145,7 @@ There are other ways of exposing the dashboard, defining the service as *NodePor
 
 In order to get metrics and graphs from the [Dashboard](https://github.com/kubernetes/dashboard), [Heapster](https://github.com/kubernetes/heapster/) has to be running in the cluster.
 
-![heapster](./docs/img/dashboard-heapster.png)
+![heapster](./img/dashboard-heapster.png)
 
 [Heapster](https://github.com/kubernetes/heapster/) deployment: 
 
