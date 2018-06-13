@@ -1,0 +1,54 @@
+server:
+  port: 8080
+spring: 
+  profiles: kube  
+  cloud: 
+    stream:
+      kafka:
+        binder:
+          brokers: kafka-service
+          zkNodes: zookeeper    
+          autoCreateTopics: true
+        bindings:
+          output:
+            producer: 
+              configuration: 
+                max:
+                  block:
+                    ms: 5000  
+                interceptor:
+                  classes: org.mocr.poc.reactive.movements.producer.MovementProducer$MovementProducerInterceptor 
+      bindings: 
+        output:
+          destination: movements
+          content-type: application/json       
+ 
+---
+server:
+  port: 8080  
+spring: 
+  profiles: default  
+  cloud: 
+    stream:
+      kafka:
+        binder:
+          brokers: localhost
+          zkNodes: localhost
+          autoCreateTopics: true
+        bindings:
+          output:
+            producer:
+        #      sync: true  
+              configuration:
+                # request.timeout.ms: 5000                
+                max:
+                  block:
+                    ms: 5000  
+                interceptor:
+                  classes: org.mocr.poc.reactive.movements.producer.MovementProducer$MovementProducerInterceptor         
+      bindings: 
+        output:
+          destination: movements
+          content-type: application/json   
+          producer:
+            error-channel-enabled: true

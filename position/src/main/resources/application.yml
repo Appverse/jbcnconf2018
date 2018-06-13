@@ -1,0 +1,64 @@
+server:
+  port: 8080  
+spring: 
+  profiles: kube  
+  cloud: 
+    stream:       
+      kafka:
+        streams:
+          bindings: 
+            input: 
+              consumer: 
+                valueSerde: org.mocr.poc.reactive.positio.serde.PositionEventSerde 
+          binder:
+            brokers: kafka-service:9092
+            zkNodes: zookeeper:2181
+            autoCreateTopics: false
+            serdeError: logAndContinue 
+            configuration:
+              commit.interval.ms: 1000
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$LongSerde 
+                value.serde: org.mocr.poc.reactive.position.serde.PositionSerde
+      bindings: 
+        input:
+          destination: positions 
+          content-type: application/json  
+          group: positionsConsumerGroup   
+          consumer:
+            headerMode: raw  
+--- 
+server:
+  port: 8085  
+spring: 
+  profiles: default 
+  cloud: 
+    stream:       
+      kafka:
+        streams:
+          bindings: 
+            input: 
+              consumer: 
+                valueSerde: org.mocr.poc.reactive.positio.serde.PositionEventSerde
+          binder:
+            brokers: localhost:9092
+            zkNodes: localhost:2181
+            autoCreateTopics: false
+            serdeError: logAndContinue 
+            configuration:
+              commit.interval.ms: 1000
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$LongSerde 
+                value.serde: org.mocr.poc.reactive.position.serde.PositionSerde
+      bindings: 
+        input:
+          destination: positions 
+          content-type: application/json  
+          group: positionsConsumerGroup   
+          consumer:
+            headerMode: raw 
+
+logging.level.kafka.admin.AdminClient.AdminConfig: INFO 
+logging.level.kafka.server.KafkaConfig: INFO
+logging.level.org.I0Itec.zkclient: INFO    
+          

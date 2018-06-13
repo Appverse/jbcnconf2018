@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: position-builder-service
+  labels:
+    app: position-builder-service
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: position-builder-pod
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: position-builder-replica
+  labels:
+    app: position-builder-replica
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: position-builder-pod
+    spec:
+      containers:
+      - name: position-builder-container
+        image: poc/position-builder:0.0.2
+        ports:
+        - containerPort: 8080
+         
+ 

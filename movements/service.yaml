@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: movs-service
+  labels:
+    app: movs-service
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: movements
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: movs-ingress 
+  annotations:
+   kubernetes.io/ingress.class: traefik
+   traefik.frontend.rule.type: PathPrefix
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /movements
+        backend:
+          serviceName: movs-service
+          servicePort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mov-deployment
+  labels:
+    app: movements
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movements
+  template:
+    metadata:
+      labels:
+        app: movements
+    spec:
+      containers:
+      - name: mov-container
+        image: poc/movements:0.0.1
+        ports:
+        - containerPort: 8080 
+        resources: 
+          requests:
+            cpu: "0.8"
+            memory: "512Mi"
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: movements
+  namespace: default
+  labels:
+    app: movements
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mov-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 80 
+ 
+      
+      
+      
+      
+  

@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: posistions-service
+  labels:
+    app: posistions-service
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: posistions-pod
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: posistions-replica
+  labels:
+    app: posistions-replica
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: posistions-pod
+    spec:
+      containers:
+      - name: posistion-container
+        image: poc/positions:0.0.1
+        ports:
+        - containerPort: 8080 
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: pos 
+  annotations:
+   kubernetes.io/ingress.class: traefik
+   traefik.frontend.rule.type: PathPrefix
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /positions
+        backend:
+          serviceName: posistions-service
+          servicePort: 8080        

@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  labels:
+    app: web-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+  selector:
+    app: web
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-ingress
+  annotations:
+   kubernetes.io/ingress.class: traefik
+   traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /web
+        backend:
+          serviceName: web-service
+          servicePort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+  labels:
+    app: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web-container
+        image: poc/web:0.0.1
+        ports:
+        - containerPort: 80

@@ -1,0 +1,60 @@
+spring: 
+  profiles: kube   
+  main:
+    web-environment: false 
+  cloud:  
+    stream:
+      kafka:   
+        streams: 
+          binder:
+            brokers: kafka-service:9092
+            zkNodes: zookeeper:2181
+            serdeError: logAndContinue 
+            configuration:  
+              commit.interval.ms: 1000
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$LongSerde 
+                value.serde: org.mocr.poc.reactive.positionbuilder.serde.MovementSerde
+                
+      bindings: 
+        input:
+          destination: movements
+          content-type: application/json  
+          group: movementsConsumerGroup  
+        output: 
+          contentType: application/json
+          destination: positions   
+ 
+--- 
+spring: 
+  profiles: default
+  main:
+    web-environment: false   
+  cloud: 
+    stream:       
+      kafka: 
+        streams:
+          timeWindow.length: 500
+          binder:
+            brokers: localhost:9092
+            zkNodes: localhost:2181
+            serdeError: logAndContinue 
+            configuration:
+              commit.interval.ms: 1000
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$LongSerde 
+                value.serde: org.mocr.poc.reactive.positionbuilder.serde.MovementSerde
+              
+      bindings: 
+        input:
+          destination: movements 
+          content-type: application/json  
+          group: movementsConsumerGroup     
+        output: 
+          contentType: application/json
+          destination: positions 
+logging.level.kafka.admin.AdminClient.AdminConfig: INFO 
+logging.level.kafka.server.KafkaConfig: INFO
+logging.level.org.I0Itec.zkclient: INFO    
+
+ 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+    </appender>
+     <logger name="kafka" level="WARN"/>
+     <logger name="org.apache.kafka" level="WARN"/>
+     <logger name="org.apache.zookeeper" level="WARN"/>
+     <logger name="org.springframework.integration.kafka" level="WARN"/>
+     <logger name="org.springframework.kafka" level="WARN"/>
+     <logger name="org.springframework.cloud.stream" level="WARN" />
+     <logger name="org.springframework.integration.channel" level="WARN" />
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
