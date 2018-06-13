@@ -1,5 +1,21 @@
 # Reactive System with Spring 5 and Kafka Streams
 
+Table of contents
+=================
+
+<!--ts-->
+   * [Table of contents](#table-of-contents) 
+   * [Introduction](#introduction)
+      * [Reactive Spring - Spring WebFlux](#reactive-spring---spring-webflux)
+      * [Kafka Streams](#kafka-streams)
+   * [Application components](#application-components)
+      * [Producer: Movements Service](#producer-movements-service)
+      * [Processor: Position Builder](#processor-position-builder)
+      * [Sink: Positions](#sink-positions)
+      * [Web: Tracker](#web-tracker)
+   * [Running the application](#running-the-application)
+<!--te-->
+
 ## Introduction
 
 In plain terms reactive programming is about non-blocking applications that are asynchronous and event-driven and require a small number of threads to scale vertically (i.e. within the JVM) rather than horizontally (i.e. through clustering).
