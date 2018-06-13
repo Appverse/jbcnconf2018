@@ -1,16 +1,18 @@
 # Reactive System with Spring 5 and Kafka Streams
- 
+
+## Introduction
+
 In plain terms reactive programming is about non-blocking applications that are asynchronous and event-driven and require a small number of threads to scale vertically (i.e. within the JVM) rather than horizontally (i.e. through clustering).
 
-## Reactive Spring - Spring WebFlux
+### Reactive Spring - Spring WebFlux
 
 Spring Framework 5 includes a new spring-webflux module. The module contains support for reactive HTTP and WebSocket clients as well as for reactive server web applications including REST, HTML browser, and WebSocket style interactions.
 
-## Kafka Streams 
+### Kafka Streams 
 
 Kafka Streams is a client library for building applications and microservices, where the input and output data are stored in Kafka clusters. 
 
-## Proof of Concept
+## Application components
 
 This demo application is a simple distributed system. The use case is to track object positions.
 
@@ -86,7 +88,7 @@ Position service was developed using Spring WebFlux and Spring Cloud Stream and 
 The web was developed using VueJs framework. It request current positions to the positions service to draw the points on the canvas. When a new event arrives through the Event Stream, it performs an object animation from the current position to the new position. 
 
 
-### Running
+## Running the application
 
 * Requirements
   * Java 1.8 
