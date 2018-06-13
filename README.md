@@ -154,10 +154,21 @@ The web was developed using VueJs framework. It request current positions to the
    ```
    $ cd position
    ```
+   Run:
 
    ```
    $ mvn spring-boot:run 
    ``` 
+
+   Check the positions endpoint. Service is using port **8085**:
+
+   Using cURL:
+ 
+   ```
+    $ curl http://localhost:8085/positions
+   ```
+   
+   Using HTTPie:
 
    ```
    $ http :8085/positions 
