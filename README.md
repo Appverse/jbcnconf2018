@@ -114,7 +114,7 @@ The web was developed using VueJs framework. It request current positions to the
     $ mvn spring-boot:run 
     ```
 
-	Check that movements topic was created:
+	Check that movements topic was created. From the **stack** folder execute:
 
     ```
     $ docker-compose exec kafka kafka-topics --describe --topic movements --zookeeper zookeeper:2181
@@ -122,8 +122,15 @@ The web was developed using VueJs framework. It request current positions to the
    
     Post a movement, the first movement for an object is the initial position. 
 
+    Using cURL:
+ 
     ```
-	$ http POST :8080/movements objectId=1 x=100 y=50 
+    $ curl -X POST -H "Content-Type: application/json" -d '{"objectId": 1, "x": 10, "y": 10}' http://localhost:8080/movements
+    ```
+    Or using [HTTPie](https://httpie.org/):
+
+    ```
+   	$ http POST :8080/movements objectId=1 x=100 y=50 
     ```
 
 * Position-builder:
@@ -136,7 +143,7 @@ The web was developed using VueJs framework. It request current positions to the
     $ mvn spring-boot:run 
     ```         
 
-    Check that positions topic was created 
+    Check that positions topic was created. From the **stack** folder execute:
 
     ```
     $ docker-compose exec kafka kafka-topics --describe --topic positions --zookeeper zookeeper:2181
