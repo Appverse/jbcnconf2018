@@ -28,8 +28,7 @@ public class PositionEventConsumer {
 	  input
 	      .map ((k,v) -> {	    	  
 	    	  handler.handle(v);
-	    	  return new KeyValue<Long, Position>(v.getPosition().getObjectId(), 
-	    			  new Position (v.getPosition().getObjectId(), v.getPosition().getX(), v.getPosition().getY(), v.getPosition().getCreatedAt()));
+	    	  return new KeyValue<Long, Position>(v.getPosition().getObjectId(), v.getPosition()); 
 	      })
 		  .groupByKey() 
 		  .reduce ((a,b) -> b, Materialized.as(PositionsChannels.POSITIONS_STORE) 
